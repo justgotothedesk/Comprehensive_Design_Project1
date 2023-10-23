@@ -2,6 +2,9 @@
 ### 주제 : 대규모 인공지능 언어모델을 활용한 서비스 개발
 ### 서비스 내용 : 사용자의 조건에 맞는 강의 추천 서비스 '강의 잇나'
 
+<img width="400" alt="스크린샷 2023-10-23 오후 9 18 04" src="https://github.com/justgotothedesk/Comprehensive_Design_Project1/assets/114928709/24eacc7d-52e5-468a-89cf-7933d852ec91">
+
+##
 💻 [회의 장소](https://meet.google.com/trj-qujt-cdg)
 
 💾 [구글 드라이브](https://drive.google.com/drive/u/0/folders/1WOQ4cE9mLBTv8xnco1zr8zcLMdK0IDnD)
