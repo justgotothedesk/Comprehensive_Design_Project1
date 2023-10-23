@@ -1,6 +1,6 @@
 # Comprehensive_Design_Project1
 ### 주제 : 대규모 인공지능 언어모델을 활용한 서비스 개발
-### 서비스 내용 : 사용자의 조건에 맞는 강의 추천 서비스
+### 서비스 내용 : 사용자의 조건에 맞는 강의 추천 서비스 '강의 잇나'
 
 💻 [회의 장소](https://meet.google.com/trj-qujt-cdg)
 
