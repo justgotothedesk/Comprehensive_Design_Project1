@@ -26,11 +26,9 @@ const Main = () => {
   };
 
   const onSignUp = () => {
-    fetch('백엔드 주소', {
+    fetch('http://127.0.0.1:5000', {
       method: 'POST',
-      body: JSON.stringify({
-        question: input,
-      }),
+      body: JSON.stringify({ question: input }),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -58,6 +56,7 @@ const Main = () => {
       </div>
       <input
         type="text"
+        name="q"
         className="input-box"
         placeholder="질문을 입력해주세요."
         value={input}
