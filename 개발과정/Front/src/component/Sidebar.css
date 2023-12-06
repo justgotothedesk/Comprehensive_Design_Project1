@@ -1,0 +1,36 @@
+/* Sidebar.css */
+
+.sidebar-container {
+    position: fixed;
+    top: 62%;
+    left: 0.5%;
+    height: 75vh;
+    overflow-y: auto;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+  }
+  
+  .chat-history button {
+    margin-bottom: 10px;
+  }
+ 
+  .setting{
+    position: fixed;
+    top: 70%;
+    left: 0.5%;
+    overflow-y: auto;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    margin-top: 10px;
+  }
+
+  .buttons button {
+    margin-top: 10px;
+  }
+  
