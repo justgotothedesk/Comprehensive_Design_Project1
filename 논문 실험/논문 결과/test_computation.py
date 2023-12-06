@@ -65,4 +65,3 @@ for case1 in format :
 output_file_path = 'C:\Users\wjdfo\OneDrive\바탕 화면\project\test_result.json'
 with open(output_file_path, "w", encoding = 'utf-8') as result :
     json.dump(result, ensure_ascii = False, indent = '\t')
-
