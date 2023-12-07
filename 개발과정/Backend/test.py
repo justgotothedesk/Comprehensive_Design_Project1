@@ -1,13 +1,7 @@
-<<<<<<< HEAD
 import os
 current_directory = os.getcwd()
-k = os.listdir(current_directory+"cloud api key")
-path = current_directory + "\\cloud api key\\" + k[0]
-=======
-import os 
-# path = '/Users/crossrunway/Flask/Chatbot/valiant-imagery-399603-80f2300bb884.json'
-path = '/home/crossrunway01/Chatbot/valiant-imagery-399603-80f2300bb884.json'
->>>>>>> d8fd5352b185ee0ddd94b238addbb03fd56b0047
+k = os.listdir(current_directory+"\\cloud api key")
+path = current_directory + "\\cloud api key\\" + k[0] #디렉토리에서 api key 파일 위치에 따라 안될 수도 있음
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = path
 
 import sys
@@ -21,7 +15,6 @@ from vertexai.preview.language_models import ChatModel, InputOutputTextPair, Cha
 
 class test :
     def __init__(self):
-        self.history = []
         PROJECT_ID = "esoteric-stream-399606"
         LOCATION = "us-central1"
         vertexai.init(project=PROJECT_ID, location=LOCATION)
@@ -72,7 +65,7 @@ class test :
 
         return
 
-    def service(self, query_text):
+    def service(self, query_text, session_history):
         chat = self.chat_model.start_chat(
             context="수업에 대해 궁금해하는 학생들이 과목, 교수에 대해 질문하는 서비스야. 강의평과 관련된 질문이면 질문 내용에 질문을 출력해주고 아니면 그냥 NULL을 출력해줘",
             examples=[
@@ -157,7 +150,7 @@ class test :
 
         output_chat = self.output_model.start_chat(
             context="강의를 찾는 대학생들에게 강의평들을 토대로 수업이 어떤지 알려주는 서비스야, 주어진 강의평들을 요약해서 학생들에게 알려줘" + articles + "강의평을 가져올 때는 있는 그대로 가져오지 말고 나름대로 요약해서 알려주고 공손하게 알려줘",
-            message_history = self.history,
+            message_history = session_history,
             temperature=0.3,
             max_output_tokens=1024,
             top_p=0.8,
@@ -166,7 +159,7 @@ class test :
 
         output = output_chat.send_message(query_text).text
 
-        self.history.append(ChatMessage(content = query_text, author = "user"))
-        self.history.append(ChatMessage(content = output, author = "bot"))
+        session_history.append(ChatMessage(content = query_text, author = "user"))
+        session_history.append(ChatMessage(content = output, author = "bot"))
 
         return output
