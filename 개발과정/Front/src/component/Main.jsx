@@ -4,7 +4,7 @@ import './Main.css';
 const Main = () => {
   const [input, setInput] = useState('');
   const [output, setOutput] = useState([]);
-  const inputRef = useRef();
+  //const inputRef = useRef();
   const outputRef = useRef();
 
   const handleInputChange = (e) => {
