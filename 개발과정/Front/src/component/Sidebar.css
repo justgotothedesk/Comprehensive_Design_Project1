@@ -1,36 +1,29 @@
-/* Sidebar.css */
+#sidebar {
+  height: 100%;
+  width: 250px;
+  position: fixed;
+  left: 0;
+  background-color: #111;
+  padding-top: 20px;
+  color: white;
+  text-align: center;
+}
 
-.sidebar-container {
-    position: fixed;
-    top: 62%;
-    left: 0.5%;
-    height: 75vh;
-    overflow-y: auto;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 20px;
-  }
-  
-  .chat-history button {
-    margin-bottom: 10px;
-  }
- 
-  .setting{
-    position: fixed;
-    top: 70%;
-    left: 0.5%;
-    overflow-y: auto;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 20px;
-    margin-top: 10px;
-  }
+#content {
+  margin-left: 250px;
+  padding: 16px;
+}
 
-  .buttons button {
-    margin-top: 10px;
-  }
-  
+/* Add styles for links in the sidebar */
+#sidebar a {
+  padding: 8px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #818181;
+  display: block;
+}
+
+/* Change color on hover */
+#sidebar a:hover {
+  color: #f1f1f1;
+}
