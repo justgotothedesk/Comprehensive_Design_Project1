@@ -3,37 +3,40 @@ import "./App.css";
 import Main from "./component/Main";
 import Header from "./component/Header";
 import Sidebar from "./component/Sidebar";
+import Mobile_Header from "./component/Mobile_Header";
 import { useMediaQuery } from "react-responsive";
 
-export const Mobile = ({ children }) => {
+function App() {
     const isMobile = useMediaQuery({
         query: "(max-width:768px)",
     });
 
-    return <>{isMobile && children}</>;
-};
-
-export const PC = ({ children }) => {
-    const isPc = useMediaQuery({
-        query: "(min-width:769px)",
-    });
-
-    return <div className="pc-box">{isPc && children}</div>;
-};
-
-function App() {
     return (
         <div className="App">
-            <Mobile>Mobile</Mobile>
-            <PC>
-                <div class="sidebar">
-                    <Sidebar />
+            {isMobile && (
+                <div className="mobile-box">
+                    <div className="mobile-header">
+                        <Mobile_Header />
+                    </div>
+                    <div className="mobile-body">
+                        body
+                    </div>
+                    <div className="mobile-footer">
+                        head
+                    </div>
                 </div>
-                <div class="non-sidebar">
-                    <Header />
-                    <Main />
+            )}
+            {!isMobile && (
+                <div className="pc-box">
+                    <div class="sidebar">
+                        <Sidebar />
+                    </div>
+                    <div class="non-sidebar">
+                        <Header />
+                        <Main />
+                    </div>
                 </div>
-            </PC>
+            )}
         </div>
     );
 }

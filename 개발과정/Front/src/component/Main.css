@@ -8,12 +8,13 @@
     display: flex;
     flex-direction: column;
     overflow:hidden;
+    margin-top:3%;
 }
 
 .output {
     width: 80%;
     height: 60%;
-    flex: 10;
+    flex: 9;
     border-radius: 20px;
     border-width: 1px;
     border-color: #000000;
