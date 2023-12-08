@@ -4,6 +4,7 @@ import Main from "./component/Main";
 import Header from "./component/Header";
 import Sidebar from "./component/Sidebar";
 import Mobile_Header from "./component/Mobile_Header";
+import Mobile_Main from "./component/Mobile_Main";
 import { useMediaQuery } from "react-responsive";
 
 function App() {
@@ -19,10 +20,7 @@ function App() {
                         <Mobile_Header />
                     </div>
                     <div className="mobile-body">
-                        body
-                    </div>
-                    <div className="mobile-footer">
-                        head
+                        <Mobile_Main />
                     </div>
                 </div>
             )}

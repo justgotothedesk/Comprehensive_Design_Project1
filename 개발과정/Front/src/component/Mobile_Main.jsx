@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
-import "./Main.css";
+import "./Mobile_Main.css";
 import Button from "react-bootstrap/Button";
 import { PaperPlaneTilt } from "@phosphor-icons/react";
 
-const Main = () => {
+const Mobile_Body = () => {
     const [input, setInput] = useState("");
     const [output, setOutput] = useState([]);
     // const inputRef = useRef();
@@ -62,10 +62,10 @@ const Main = () => {
     }, [output]);
 
     return (
-        <div className="main-container">
-            <div className="output" ref={outputRef}>
+        <div className="mobile-main-container">
+            <div className="mobile-output" ref={outputRef}>
                 {output.map((item, index) => (
-                    <div key={index} className="answer">
+                    <div key={index} className="mobile-answer">
                         <p style={{ textAlign: "left" }}>
                             <strong>질문:</strong> {item.command}
                             <br />
@@ -74,23 +74,23 @@ const Main = () => {
                     </div>
                 ))}
             </div>
-            <div className="input">
+            <div className="mobile-input">
                     <input
                         type="text"
                         name="q"
-                        className="input-field"
+                        className="mobile-input-field"
                         placeholder="질문을 입력해주세요."
                         value={input}
                         onChange={handleInputChange}
                         onKeyPress={handleEnterPress}
                     />
-                     <PaperPlaneTilt size={20}
+                    <PaperPlaneTilt size={20}
                         className="mobile-input-button"
                         onClick={handleClick}
-                    />              
+                    />            
             </div>
         </div>
     );
 };
 
-export default Main;
+export default Mobile_Body;
