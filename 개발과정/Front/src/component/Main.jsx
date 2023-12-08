@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './Main.css';
+import Button from 'react-bootstrap/Button';
 
 const Main = () => {
   const [input, setInput] = useState('');
@@ -21,6 +22,13 @@ const Main = () => {
     }
   };
 
+  const handleClick = (e) => {
+    console.log(input);
+    const result = processCommand(input);
+    setOutput([...output, { command: input, result }]);
+    setInput('');
+    onSignUp();
+  }
   const processCommand = (command) => {
     return "잠시만 기다려 주세요. 10초 정도 소요됩니다.";
   };
@@ -34,21 +42,20 @@ const Main = () => {
         'Content-Type': 'application/json',
       },
     })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(res => 
-      {
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(res => {
         console.log(res);
         const answer = res.answer; // "answer"의 값을 추출
         setOutput([...output, { command: input, result: answer }]);
       })
-    .catch(error => console.error('Error:', error));
+      .catch(error => console.error('Error:', error));
   };
-  
+
 
   useEffect(() => {
     outputRef.current.scrollTop = outputRef.current.scrollHeight;
@@ -76,6 +83,7 @@ const Main = () => {
         onChange={handleInputChange}
         onKeyPress={handleEnterPress}
       />
+      <Button variant="secondary" className="input-button" onClick={handleClick}>Send</Button>
     </div>
   );
 };

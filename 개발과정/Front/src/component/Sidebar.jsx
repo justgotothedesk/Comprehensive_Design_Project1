@@ -1,6 +1,5 @@
 import React from 'react';
 import './Sidebar.css';
-import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
 
 const Sidebar = () => {
@@ -41,13 +40,15 @@ const Sidebar = () => {
       <html>
         <head>
           <style>
+            @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap');
+
             body {
-              font-family: 'Arial', sans-serif;
+              font-family: 'Noto Sans KR', sans-serif;
               margin: 20px;
             }
 
             h2 {
-              color: #4285f4;
+              color: 	# 808080;
             }
 
             p {
@@ -65,11 +66,12 @@ const Sidebar = () => {
   return (
     <div id="sidebar">
       <div id="sidebar-header">
-        <h2><Badge bg="secondary">NEW CHAT</Badge></h2>
+        <Button variant="outline-secondary" size="lg">NEW CHAT</Button>
       </div>
       <hr></hr>
       <div id="sidebar-body">
-        <a href="/">History</a>
+        <a href="/">위는 새로운 채팅 생성</a>
+        <a href="/">여기는 History</a>
         <a href="/">목록 list 넣어야할듯</a>
       </div>
       <hr></hr>
