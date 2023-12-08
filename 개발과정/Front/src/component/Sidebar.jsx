@@ -66,7 +66,7 @@ const Sidebar = () => {
   return (
     <div id="sidebar">
       <div id="sidebar-header">
-        <Button variant="outline-secondary" size="lg">NEW CHAT</Button>
+        <Button variant="outline-secondary" size="sm">NEW CHAT</Button>
       </div>
       <hr></hr>
       <div id="sidebar-body">

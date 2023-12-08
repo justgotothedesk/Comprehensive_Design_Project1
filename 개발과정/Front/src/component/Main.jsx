@@ -83,7 +83,7 @@ const Main = () => {
         onChange={handleInputChange}
         onKeyPress={handleEnterPress}
       />
-      <Button variant="secondary" className="input-button" onClick={handleClick}>Send</Button>
+      <Button variant="secondary" className="input-button" onClick={handleClick} size="sm">Send</Button>
     </div>
   );
 };
