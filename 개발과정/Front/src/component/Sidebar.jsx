@@ -66,19 +66,15 @@ const Sidebar = () => {
   return (
     <div id="sidebar">
       <div id="sidebar-header">
-        <Button variant="outline-secondary" size="sm">NEW CHAT</Button>
+        <div className="d-grid gap-2">
+          <Button variant="outline-secondary" size="sm">NEW CHAT</Button>
+        </div>
       </div>
       <hr></hr>
       <div id="sidebar-body">
-        <a href="/">위는 새로운 채팅 생성</a>
-        <a href="/">여기는 History</a>
-        <a href="/">목록 list 넣어야할듯</a>
-      </div>
-      <hr></hr>
-      <div id="sidebar-footer">
-        <Button variant="outline-secondary" onClick={() => openWindow('/about')} size="sm">About</Button>{' '}
-        <Button variant="outline-secondary" onClick={() => openWindow('/services')} size="sm">Services</Button>{' '}
-        <Button variant="outline-secondary" onClick={() => openWindow('/contact')} size="sm">Contact</Button>
+        <a onClick={() => openWindow('/about')}>About</a>
+        <a onClick={() => openWindow('/services')}>Services</a>
+        <a onClick={() => openWindow('/contact')}>Contact</a>
       </div>
     </div>
   );

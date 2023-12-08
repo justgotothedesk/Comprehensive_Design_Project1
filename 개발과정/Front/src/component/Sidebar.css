@@ -1,83 +1,37 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap");
 
-@media screen and (min-width: 1025px) {
-  #sidebar {
+#sidebar {
+    width: 100%;
+    font-family: "Noto Sans KR", sans-serif;
     height: 100%;
-    width: 22%;
-    position: fixed;
-    left: 0;
     background-color: #111;
     padding-top: 20px;
     color: white;
     text-align: center;
-  }
+}
 
-  #sidebar-header {
-    font-family: 'Noto Sans KR', sans-serif;
-  }
-
-  #sidebar hr {
+#sidebar hr {
     color: white;
-  }
+}
 
-  #sidebar-body {
+#sidebar-body {
     height: 70%;
-  }
-
-  #sidebar-footer {
-    margin-top: 15%;
-  }
-
-  #sidebar a {
     padding: 8px;
-    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 18px;
+}
+
+#sidebar a {
+    padding: 8px;
+    font-family: "Noto Sans KR", sans-serif;
     font-size: 18px;
     color: #818181;
     display: block;
-  }
-
-  #sidebar a:hover {
-    color: #f1f1f1;
-  }
 }
 
-@media screen and (min-width: 769px) and (max-width: 1024px){ 
-  #sidebar {
-    height: 100%;
-    width: 15%;
-    position: fixed;
-    left: 0;
-    background-color: #111;
-    padding-top: 20px;
-    color: white;
-    text-align: center;
-  }
-
-  #sidebar-header {
-    font-family: 'Noto Sans KR', sans-serif;
-  }
-
-  #sidebar hr {
-    color: white;
-  }
-
-  #sidebar-body {
-    height: 60%;
-  }
-
-  #sidebar-footer {
-    display: none;
-  }
-
-  #sidebar a {
-    padding: 8px;
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 12px;
-    color: #818181;
-    display: block;
-  }
-
-  #sidebar a:hover {
+#sidebar a:hover {
     color: #f1f1f1;
-  }
+}
+
+#sidebar-footer img{
+  width: 15%;
 }
