@@ -22,6 +22,11 @@
 #sidebar-body{
   height: 70%;
 }
+
+#sidebar-footer{
+  margin-top: 15%;  
+}
+
 #sidebar a {
   padding: 8px;
   font-family: 'Noto Sans KR', sans-serif;

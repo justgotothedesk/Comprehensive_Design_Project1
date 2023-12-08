@@ -1,6 +1,7 @@
 import React from 'react';
 import './Sidebar.css';
 import Badge from 'react-bootstrap/Badge';
+import Button from 'react-bootstrap/Button';
 
 const Sidebar = () => {
   const openWindow = (url) => {
@@ -68,15 +69,14 @@ const Sidebar = () => {
       </div>
       <hr></hr>
       <div id="sidebar-body">
-      <a href="/">Home</a>
-        <a href="#" onClick={() => openWindow('/about')}>About</a>
-      <a href="#" onClick={() => openWindow('/services')}>Services</a>
-      <a href="#" onClick={() => openWindow('/contact')}>Contact</a>
-
+        <a href="/">History</a>
+        <a href="/">목록 list 넣어야할듯</a>
       </div>
       <hr></hr>
       <div id="sidebar-footer">
-        <p>무엇이 들어가면 좋을지 고민중...</p>
+        <Button variant="outline-secondary" onClick={() => openWindow('/about')} size="sm">About</Button>{' '}
+        <Button variant="outline-secondary" onClick={() => openWindow('/services')} size="sm">Services</Button>{' '}
+        <Button variant="outline-secondary" onClick={() => openWindow('/contact')} size="sm">Contact</Button>
       </div>
     </div>
   );
