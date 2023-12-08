@@ -1,14 +1,22 @@
-/* Header.css */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@900&display=swap');
 #header{
-  position: fixed;
-  width: 100%;
-  left: 50%;
+  position: relative;
   display: flex;
+  height: 20%;
   align-items: center;
+  justify-content: center;
 }
 
-#title{
+#header img{
+  width: 5%;
+  height: 5%;
+  margin-top:2%;
+  margin-right: 2%;
+}
+
+#header h2{
+  font-family: 'Noto Sans KR', sans-serif;
   font-size: large;
-  top: '0';
-  text-align: center;
+  text-align: left;
+  margin-top: 2.5%;
 }

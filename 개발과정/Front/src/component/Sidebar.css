@@ -1,6 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap');
+
 #sidebar {
   height: 100%;
-  width: 250px;
+  width: 15%;
   position: fixed;
   left: 0;
   background-color: #111;
@@ -9,21 +11,25 @@
   text-align: center;
 }
 
-#content {
-  margin-left: 250px;
-  padding: 16px;
+#sidebar-header{
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
-/* Add styles for links in the sidebar */
+#sidebar hr{
+  color: white;
+}
+
+#sidebar-body{
+  height: 70%;
+}
 #sidebar a {
   padding: 8px;
-  text-decoration: none;
+  font-family: 'Noto Sans KR', sans-serif;
   font-size: 18px;
   color: #818181;
   display: block;
 }
 
-/* Change color on hover */
 #sidebar a:hover {
   color: #f1f1f1;
 }
