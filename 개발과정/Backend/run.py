@@ -21,7 +21,7 @@ CORS(app)
 chatbot = test()
 question_history = []
 
-@app.route('/login')
+@app.route('/')
 def login():
     username = request.form['username']
     password = request.form['password']
@@ -40,7 +40,7 @@ def login():
         print("User: " + username + " added.")
         return redirect(url_for('chat'))
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/chat', methods=['GET', 'POST'])
 def chat():
     user_id = session.get('user_id')
     if user_id is None:
@@ -60,8 +60,6 @@ def chat():
         print(question, " 수신함")
 
         answer = chatbot.service(question)
-        # session 생성된 경우
-        # answer = chatbot.service(question, session[user])
 
         print(answer, " 추출함")
 
@@ -71,9 +69,6 @@ def chat():
 @app.route('/logout')
 def logout():
     session.clear()
-    
-# def logout():
-#     session[user].pop()
 
 if __name__ == '__main__':
     # app.run(debug=False, host='0.0.0.0')    # 서버 연결할 때 사용
