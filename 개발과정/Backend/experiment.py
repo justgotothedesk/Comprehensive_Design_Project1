@@ -119,6 +119,7 @@ chat = chat_model.start_chat(
         top_p=0.8,
         top_k=1
         )
+# recommendation_chat = ChatModel.from_pretrained("chat-bison@001")
 output_model = ChatModel.from_pretrained("chat-bison@001")
 
 with pool.connect() as db_conn: # 쿼리 실행문
@@ -204,44 +205,46 @@ while True :
     else :
         print("수업 추천")
         
-        option = ""
-        high = 0
-        
         inputs = tokenizer(query_text, padding=True, truncation=True, return_tensors="pt")
         embeddings, _ = model(**inputs, return_dict=False)
         query, embedding_arr = embeddings[0][0], embeddings[0][0].detach().numpy()
         embedding_str = ",".join(str(x) for x in embedding_arr)
         embedding_str = "["+embedding_str+"]"
 
+        
+        related = ""
         for information in info :
             a = cal_score(query, information[0])
-            if  a > high :
-                high = a
-                option = information[1]
+            if a > 0.7 :
+                related += "\'"+information[1]+"\',"
+        print(related)
 
         insert_stat, param = (sqlalchemy.text(
-                        """SELECT origin_text, rating, assignment, team, grade, attendance, test FROM PROFNLEC
-                        WHERE INFO LIKE :information
-                        ORDER BY v <-> :query_vec LIMIT 20"""   # <-> : L2 Distance,  <=> : Cosine Distance, <#> : inner product (음수 값을 return)
-            ), {"information": option, "query_vec": embedding_str})
+                        """SELECT info, text FROM RECOMMENDATION
+                        WHERE INFO in (:list)
+                        ORDER BY v <=> :query_vec LIMIT 3"""   # <-> : L2 Distance,  <=> : Cosine Distance, <#> : inner product (음수 값을 return)
+            ), {"list": related[:-1], "query_vec": embedding_str})
 
         with pool.connect() as db_conn: # 쿼리 실행문
             result = db_conn.execute(
                 insert_stat, parameters = param
             ).fetchall()
 
+        for _ in result :
+            print(_)
+            
         #query 결과를 문자열로 바꾸기 <- Context에는 문자열만 들어갈 수 있음
         articles = ""
         for res in result :
             articles += res[0]
 
         output_chat = output_model.start_chat(
-            context="강의를 찾는 대학생들에게 강의평들을 토대로 수업이 어떤지 알려주는 서비스야, 주어진 강의평들을 요약해서 학생들에게 알려줘" + articles + "강의평을 가져올 때는 있는 그대로 가져오지 말고 나름대로 요약해서 알려주고 공손하게 알려줘",
+            context="강의를 찾는 대학생들에게 강의평들을 토대로 수업을 추천해주는 서비스야, 주어진 강의평들을 요약해서 학생들에게 알려줘" + articles + "강의평을 가져올 때는 있는 그대로 가져오지 말고 나름대로 요약해서 알려주고 공손하게 알려줘",
             message_history = history,
             temperature=0.3,
             max_output_tokens=1024,
             top_p=0.8,
-            top_k=10
+            top_k=40
         )
 
         output = output_chat.send_message(query_text).text
@@ -249,7 +252,6 @@ while True :
         history.append(ChatMessage(content = query_text, author = "user"))
         history.append(ChatMessage(content = output, author = "bot"))
 
-        print(option, "추천해요")
         print(output)
 
     for his in history :

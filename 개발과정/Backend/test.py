@@ -65,7 +65,8 @@ class test :
 
         return
 
-    def service(self, query_text, session_history):
+    def service(self, query_text):
+    # def service(self, query_text, session_history): #session 생성된 경우
         chat = self.chat_model.start_chat(
             context="수업에 대해 궁금해하는 학생들이 과목, 교수에 대해 질문하는 서비스야. 강의평과 관련된 질문이면 질문 내용에 질문을 출력해주고 아니면 그냥 NULL을 출력해줘",
             examples=[
@@ -150,7 +151,7 @@ class test :
 
         output_chat = self.output_model.start_chat(
             context="강의를 찾는 대학생들에게 강의평들을 토대로 수업이 어떤지 알려주는 서비스야, 주어진 강의평들을 요약해서 학생들에게 알려줘" + articles + "강의평을 가져올 때는 있는 그대로 가져오지 말고 나름대로 요약해서 알려주고 공손하게 알려줘",
-            message_history = session_history,
+            #message_history = session_history,
             temperature=0.3,
             max_output_tokens=1024,
             top_p=0.8,
@@ -159,7 +160,7 @@ class test :
 
         output = output_chat.send_message(query_text).text
 
-        session_history.append(ChatMessage(content = query_text, author = "user"))
-        session_history.append(ChatMessage(content = output, author = "bot"))
+        # session_history.append(ChatMessage(content = query_text, author = "user"))
+        # session_history.append(ChatMessage(content = output, author = "bot"))
 
         return output
