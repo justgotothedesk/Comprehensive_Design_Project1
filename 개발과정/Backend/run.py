@@ -15,6 +15,7 @@ db = SQLAlchemy(app)
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50))
+    password = db.Column(db.String(50))
 
 CORS(app)
 chatbot = test()
@@ -23,15 +24,21 @@ question_history = []
 @app.route('/login')
 def login():
     username = request.form['username']
+    password = request.form['password']
+
     user = User.query.filter_by(username=username).first()
     if user is not None:
-        # 세션에 사용자 ID 저장
+        # 세션에 사용자 ID가 존재하는 경우
         session['user_id'] = user.id
+        print("User: " + username + " login.")
         return redirect(url_for('chat'))
     else:
-        return '로그인 실패'
-
-    print("User: " + user_id + " login.")
+        # 세션에 사용자 ID가 존재하지 않는 경우
+        user = User(username=username)
+        db.session.add(user)
+        db.session.commit()
+        print("User: " + username + " added.")
+        return redirect(url_for('chat'))
 
 @app.route('/', methods=['GET', 'POST'])
 def chat():
