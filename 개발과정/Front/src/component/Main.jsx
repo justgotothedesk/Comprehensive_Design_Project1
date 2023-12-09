@@ -31,7 +31,9 @@ const Main = () => {
         onSignUp();
     };
     const processCommand = (command) => {
-        return "잠시만 기다려 주세요. 10초 정도 소요됩니다.";
+        return <div className="blink">
+            ⦁
+        </div>;
     };
 
     const onSignUp = () => {
@@ -67,27 +69,34 @@ const Main = () => {
                 {output.map((item, index) => (
                     <div key={index} className="answer">
                         <p style={{ textAlign: "left" }}>
-                            <strong>질문:</strong> {item.command}
-                            <br />
-                            <strong>답변:</strong> {item.result}
+                            <strong>You</strong> 
+                            <div className="question">
+                                {item.command}
+                            </div>
+                            <strong>강의잇나</strong> 
+                            <div className="animation" >
+                                {item.result}
+                            </div>
                         </p>
                     </div>
+                    
                 ))}
             </div>
             <div className="input">
-                    <input
-                        type="text"
-                        name="q"
-                        className="input-field"
-                        placeholder="질문을 입력해주세요."
-                        value={input}
-                        onChange={handleInputChange}
-                        onKeyPress={handleEnterPress}
-                    />
-                     <PaperPlaneTilt size={20}
-                        className="mobile-input-button"
-                        onClick={handleClick}
-                    />              
+                <input
+                    type="text"
+                    name="q"
+                    className="input-field"
+                    placeholder="질문을 입력해주세요."
+                    value={input}
+                    onChange={handleInputChange}
+                    onKeyPress={handleEnterPress}
+                />
+                <PaperPlaneTilt
+                    size={20}
+                    className="mobile-input-button"
+                    onClick={handleClick}
+                />
             </div>
         </div>
     );
