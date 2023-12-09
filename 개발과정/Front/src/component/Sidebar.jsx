@@ -28,8 +28,8 @@ const Sidebar = () => {
         <div>
           <h2>궁금하신게 있다면?</h2>
           <p>김근찬 @pau._.ler</p>
-          <p>신진철 @99_flor</p>
           <p>신성한 @sunghan_s</p>
+          <p>신진철 @99_flor</p>
           <p>조정래 @jungrae</p>
         </div>
       `,
