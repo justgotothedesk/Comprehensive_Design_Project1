@@ -54,3 +54,41 @@
     margin-top: 2%;
     margin-left: 2%;
 }
+
+.question{
+    margin: 0px 10px 5px 10px;
+}
+
+.animation {
+    overflow: hidden;
+    white-space: nowrap;
+    margin: 0px 10px 10px 10px;
+    width: 0;
+    animation: typing 7s steps(50) forwards;
+  }
+  
+  @keyframes typing {
+    0% {
+      width: 0;
+    }
+    100% {
+      width: 100%;
+    }
+  }
+  
+  @keyframes blink-effect {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+  
+  .blink {
+    animation: blink-effect 1.2s linear infinite;
+  }
+  
+
+
+  
