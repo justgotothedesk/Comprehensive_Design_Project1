@@ -67,9 +67,14 @@ const Mobile_Body = () => {
                 {output.map((item, index) => (
                     <div key={index} className="mobile-answer">
                         <p style={{ textAlign: "left" }}>
-                            <strong>질문:</strong> {item.command}
-                            <br />
-                            <strong>답변:</strong> {item.result}
+                            <strong>You</strong> 
+                            <div className="mobile-question">
+                                {item.command}
+                            </div>
+                            <strong>강의잇나</strong> 
+                            <div className="mobile-animation" >
+                                {item.result}
+                            </div>
                         </p>
                     </div>
                 ))}

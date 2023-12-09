@@ -1,33 +1,33 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap");
 
 .main-container {
-    width: 100%;
-    flex: 8.5;
-    align-items: center;
-    justify-content: center;
-    display: flex;
-    flex-direction: column;
-    overflow:hidden;
-    font-family: "Noto Sans KR", sans-serif;
+  width: 100%;
+  flex: 8.5;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: "Noto Sans KR", sans-serif;
 }
 
 .output {
-    width: 80%;
-    height: 60%;
-    flex: 9;
-    border-radius: 20px;
-    border-width: 1px;
-    border-color: #000000;
-    border-style: solid;
-    overflow: scroll;
+  width: 80%;
+  height: 60%;
+  flex: 9;
+  border-radius: 20px;
+  border-width: 1px;
+  border-color: #000000;
+  border-style: solid;
+  overflow: scroll;
 }
 
 .input {
-    width: 100%;
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .input-field {
@@ -46,49 +46,50 @@
 }
 
 .input-button {
-    position: absolute;
-    right: 9%;
+  position: absolute;
+  right: 9%;
 }
 
-.answer{
-    margin-top: 2%;
-    margin-left: 2%;
+.answer {
+  margin-top: 2%;
+  margin-left: 2%;
 }
 
-.question{
-    margin: 0px 10px 5px 10px;
+.question {
+  margin-top: 2%;
+  margin-left: 2%;
 }
 
 .animation {
-    overflow: hidden;
-    white-space: nowrap;
-    margin: 0px 10px 10px 10px;
+  overflow: hidden;
+  white-space: nowrap;
+  margin: 0px 10px 10px 10px;
+  width: 0;
+  animation: typing 7s steps(50) forwards;
+}
+
+@keyframes typing {
+  0% {
     width: 0;
-    animation: typing 7s steps(50) forwards;
   }
-  
-  @keyframes typing {
-    0% {
-      width: 0;
-    }
-    100% {
-      width: 100%;
-    }
-  }
-  
-  @keyframes blink-effect {
-    0%, 100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0;
-    }
-  }
-  
-  .blink {
-    animation: blink-effect 1.2s linear infinite;
-  }
-  
 
+  100% {
+    width: 100%;
+  }
+}
 
-  
+@keyframes blink-effect {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+.blink {
+  animation: blink-effect 1.2s linear infinite;
+}
