@@ -74,6 +74,7 @@ const Sidebar = () => {
       <div id="sidebar-body">
         <a onClick={() => openWindow('/about')}>About</a>
         <a onClick={() => openWindow('/services')}>Services</a>
+        <a onClick={() => window.open('https://docs.google.com/forms/d/e/1FAIpQLScLgGbe6GTl0-5ocKXeBFN2WPYp98-qELmiG6AyxQLRLYqz5w/viewform')}>Survey</a>
         <a onClick={() => openWindow('/contact')}>Contact</a>
       </div>
     </div>
