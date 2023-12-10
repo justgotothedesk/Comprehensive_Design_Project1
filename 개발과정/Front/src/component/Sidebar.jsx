@@ -27,8 +27,8 @@ const Sidebar = () => {
       '/contact': `
         <div>
           <h2>궁금하신게 있다면?</h2>
-          <p>김근찬 @pau._.ler</p>
-          <p>신성한 @sunghan_s</p>
+          <p>김근찬 @pau._.ler29</p>
+          <p>신성한 @sunghans_s</p>
           <p>신진철 @99_flor</p>
           <p>조정래 @jun9rae</p>
         </div>
@@ -74,6 +74,7 @@ const Sidebar = () => {
       <div id="sidebar-body">
         <a onClick={() => openWindow('/about')}>About</a>
         <a onClick={() => openWindow('/services')}>Services</a>
+        <a onClick={() => window.open('https://docs.google.com/forms/d/e/1FAIpQLScLgGbe6GTl0-5ocKXeBFN2WPYp98-qELmiG6AyxQLRLYqz5w/viewform')}>Survey</a>
         <a onClick={() => openWindow('/contact')}>Contact</a>
       </div>
     </div>
