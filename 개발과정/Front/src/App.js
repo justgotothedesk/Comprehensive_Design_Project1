@@ -46,10 +46,15 @@ function App() {
                 return (<Main />)
             }
             else {
+<<<<<<< HEAD
                 <div>
                     <h4>이미 존재하는 닉네임입니다.</h4>
                 </div>
             };
+=======
+                console.log("이미 존재하는 이름입니다. 다른 이름을 입력해주세요.");
+            }
+>>>>>>> f5edcc88d0237c20cd0bd82c5b7e60f1c0878a4f
             })
     };
 
