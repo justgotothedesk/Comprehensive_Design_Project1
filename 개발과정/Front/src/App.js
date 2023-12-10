@@ -14,7 +14,6 @@ function App() {
     const [isLogin, setIsLogin] = useState(false);
     const [inputId, setInputId] = useState('');
 
-
     const handleInputId = (e) => {
         setInputId(e.target.value);
     }
@@ -23,6 +22,8 @@ function App() {
         console.log('click login')
         console.log('ID : ', inputId)
         make_session()
+        sessionStorage.setItem('user_id', inputId)
+        setIsLogin(true)
     }
 
     const make_session = () => {
@@ -33,29 +34,24 @@ function App() {
                 "Content-Type": "application/json",
             },
         })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-
-            const data = response.json();
-
-            if (data.success){
-                sessionStorage.setItem('user_id', inputId)
-                setIsLogin(true)
-                return (<Main />)
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
             }
-            else {
-<<<<<<< HEAD
-                <div>
-                    <h4>이미 존재하는 닉네임입니다.</h4>
-                </div>
-            };
-=======
+            return response.json();
+        })
+        .then((res) => {
+            console.log(res);
+            const answer = res.success;
+            console.log(answer);
+            if (answer){
+                return <Main />
+            }
+            else{
                 console.log("이미 존재하는 이름입니다. 다른 이름을 입력해주세요.");
             }
->>>>>>> f5edcc88d0237c20cd0bd82c5b7e60f1c0878a4f
-            })
+        })
+        .catch((error) => console.error("Error:", error));
     };
 
     const isMobile = useMediaQuery({
