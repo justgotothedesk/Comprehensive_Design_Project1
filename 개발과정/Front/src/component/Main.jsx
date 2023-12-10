@@ -1,7 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
-import "./Main.css";
-import Button from "react-bootstrap/Button";
 import { PaperPlaneTilt } from "@phosphor-icons/react";
+import React, { useEffect, useRef, useState } from "react";
+import "./Main.css";
 
 const Main = () => {
     const [input, setInput] = useState("");
@@ -38,7 +37,7 @@ const Main = () => {
 
     const onSignUp = () => {
         //'http://34.64.242.154:5000'  server ip address
-        fetch("http://127.0.0.1:5000", {
+        fetch("http://127.0.0.1:5000/chat", {
             method: "POST",
             body: JSON.stringify({ question: input }),
             headers: {

@@ -1,6 +1,6 @@
 import React from 'react';
-import './Sidebar.css';
 import Button from 'react-bootstrap/Button';
+import './Sidebar.css';
 
 const Sidebar = () => {
   const openWindow = (url) => {
@@ -30,7 +30,7 @@ const Sidebar = () => {
           <p>김근찬 @pau._.ler</p>
           <p>신성한 @sunghan_s</p>
           <p>신진철 @99_flor</p>
-          <p>조정래 @jungrae</p>
+          <p>조정래 @jun9rae</p>
         </div>
       `,
     };
