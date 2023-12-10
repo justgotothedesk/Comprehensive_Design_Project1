@@ -20,6 +20,7 @@ app.secret_key = "LectureItna"
 CORS(app)
 chatbot = test()
 chat_session = {}
+id = []
 question_history = []
 
 @app.route('/login', methods = ['POST'])
@@ -27,54 +28,39 @@ def login():
     if request.method == 'POST' :
         data = request.json
         name = data.get('id')
-        if name in session :
+        if name in id :
+            print(f"{name} already in session, please re-login with other Nickname")
             return jsonify({'success' : False})
         else :
-            session[name] = name
+            id.append(name)
+            chat_session[name] = []
             print(f"your nickname is {name}")
-            for _ in session :
+            for _ in id :
                 print(f"{_} in session.")
             return jsonify({'success' : True})
 
 @app.route('/chat', methods=['GET', 'POST'])
 def chat():
-    id = session.get('name')
-    print(id)
-
-    if id in chat_session.keys() :
-        history = chat_session[id]
-    else :
-        chat_session[id] = []
-        history = chat_session[id]
-
     # user_id = session.get('user_id')
     # if user_id is None:
     #     user = User.query.get(user_id)
     #     return 'Login Error'
     
     # print('User ' + user_id + " login.")
-    
-    if request.method == 'GET':
-        return jsonify({"question_history": question_history})
-
     if request.method == 'POST':
         data = request.json
+        user = data.get('id')
         question = data.get("question")
-        # question = data.get("question")
         question_history.append(question)
 
         print(question, " 수신함")
 
-        answer = chatbot.service(question, history)
+        answer = chatbot.service(question, chat_session[user])
 
-        print(history)
+        print(chat_session[user])
 
         response_data = {"question": question, "answer": answer}
         return jsonify(response_data)
-    
-@app.route('/logout')
-def logout():
-    session.clear()
 
 if __name__ == '__main__':
     # app.run(debug=False, host='0.0.0.0')    # 서버 연결할 때 사용

@@ -14,6 +14,7 @@ function App() {
     const [isLogin, setIsLogin] = useState(false);
     const [inputId, setInputId] = useState('');
 
+
     const handleInputId = (e) => {
         setInputId(e.target.value);
     }
@@ -22,8 +23,6 @@ function App() {
         console.log('click login')
         console.log('ID : ', inputId)
         make_session()
-        sessionStorage.setItem('user_id', inputId)
-        setIsLogin(true)
     }
 
     const make_session = () => {
@@ -42,13 +41,15 @@ function App() {
             const data = response.json();
 
             if (data.success){
-                <Main/>
+                sessionStorage.setItem('user_id', inputId)
+                setIsLogin(true)
+                return (<Main />)
             }
             else {
                 <div>
                     <h4>이미 존재하는 닉네임입니다.</h4>
                 </div>
-            }
+            };
             })
     };
 
