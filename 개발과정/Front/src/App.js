@@ -13,6 +13,7 @@ import Sidebar from "./component/Sidebar";
 function App() {
     const [isLogin, setIsLogin] = useState(false);
     const [inputId, setInputId] = useState('');
+    const [isID, setID] = useState(false);
 
     const handleInputId = (e) => {
         setInputId(e.target.value);
@@ -23,7 +24,7 @@ function App() {
         console.log('ID : ', inputId)
         make_session()
         sessionStorage.setItem('user_id', inputId)
-        setIsLogin(true)
+        setIsLogin(true);
     }
 
     const make_session = () => {
@@ -43,13 +44,11 @@ function App() {
         .then((res) => {
             console.log(res);
             const answer = res.success;
-            console.log(answer);
             if (answer){
-                return <Main />
+                setID(true);
             }
-            else{
-                console.log("이미 존재하는 이름입니다. 다른 이름을 입력해주세요.");
-            }
+            console.log(answer);
+
         })
         .catch((error) => console.error("Error:", error));
     };
@@ -60,7 +59,7 @@ function App() {
 
     return (
         <div className="App">
-            {isLogin ?
+            {isLogin && isID ?
                 isMobile && ( //모바일이면
                     <div className="mobile-box">
                         <div className="mobile-header">
@@ -96,7 +95,7 @@ function App() {
                     </div>
                 )
             }
-            {isLogin ?  //모바일이 아니면
+            {isLogin && isID ?  //모바일이 아니면
                 !isMobile && (
                     <div className="pc-box">
                         <div class="sidebar">
