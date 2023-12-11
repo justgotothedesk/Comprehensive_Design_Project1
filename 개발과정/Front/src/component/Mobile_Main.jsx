@@ -67,7 +67,7 @@ const Mobile_Body = () => {
                 {output.map((item, index) => (
                     <div key={index} className="mobile-answer">
                         <p style={{ textAlign: "left" }}>
-                            <strong>You</strong> 
+                            <strong>You</strong>
                             <div className="mobile-question">
                                 {item.command}
                             </div>

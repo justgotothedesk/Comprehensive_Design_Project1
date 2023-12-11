@@ -13,7 +13,7 @@ import Sidebar from "./component/Sidebar";
 function App() {
     const [isLogin, setIsLogin] = useState(false);
     const [inputId, setInputId] = useState('');
-
+    const [isID, setID] = useState(false);
 
     const handleInputId = (e) => {
         setInputId(e.target.value);
@@ -23,6 +23,8 @@ function App() {
         console.log('click login')
         console.log('ID : ', inputId)
         make_session()
+        sessionStorage.setItem('user_id', inputId)
+        setIsLogin(true);
     }
 
     const make_session = () => {
@@ -33,29 +35,22 @@ function App() {
                 "Content-Type": "application/json",
             },
         })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-
-            const data = response.json();
-
-            if (data.success){
-                sessionStorage.setItem('user_id', inputId)
-                setIsLogin(true)
-                return (<Main />)
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
             }
-            else {
-<<<<<<< HEAD
-                <div>
-                    <h4>이미 존재하는 닉네임입니다.</h4>
-                </div>
-            };
-=======
-                console.log("이미 존재하는 이름입니다. 다른 이름을 입력해주세요.");
+            return response.json();
+        })
+        .then((res) => {
+            console.log(res);
+            const answer = res.success;
+            if (answer){
+                setID(true);
             }
->>>>>>> f5edcc88d0237c20cd0bd82c5b7e60f1c0878a4f
-            })
+            console.log(answer);
+
+        })
+        .catch((error) => console.error("Error:", error));
     };
 
     const isMobile = useMediaQuery({
@@ -64,7 +59,7 @@ function App() {
 
     return (
         <div className="App">
-            {isLogin ?
+            {isLogin && isID ?
                 isMobile && ( //모바일이면
                     <div className="mobile-box">
                         <div className="mobile-header">
@@ -100,7 +95,7 @@ function App() {
                     </div>
                 )
             }
-            {isLogin ?  //모바일이 아니면
+            {isLogin && isID ?  //모바일이 아니면
                 !isMobile && (
                     <div className="pc-box">
                         <div class="sidebar">

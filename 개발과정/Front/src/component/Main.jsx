@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import "./Main.css";
 
 const Main = () => {
+    console.log(sessionStorage.getItem('user_id'))
     const [input, setInput] = useState("");
     const [output, setOutput] = useState([]);
     // const inputRef = useRef();
@@ -39,7 +40,7 @@ const Main = () => {
         //'http://34.64.242.154:5000'  server ip address
         fetch("http://127.0.0.1:5000/chat", {
             method: "POST",
-            body: JSON.stringify({ question: input }),
+            body: JSON.stringify({ question: input , id : sessionStorage.getItem('user_id')}),
             headers: {
                 "Content-Type": "application/json",
             },
