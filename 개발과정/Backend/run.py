@@ -8,15 +8,6 @@ from test import test
 app = Flask(__name__)
 app.secret_key = "LectureItna"
 
-# app.config['SECRET_KEY'] = 'key'
-# application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
-
-# db = SQLAlchemy(app)
-# class User(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     username = db.Column(db.String(50))
-#     password = db.Column(db.String(50))
-
 CORS(app)
 chatbot = test()
 chat_session = {}
@@ -28,31 +19,31 @@ def login():
     if request.method == 'POST' :
         data = request.json
         name = data.get('id')
+        print(id)
+        print(name)
+
         if name in id :
             print(f"{name} already in session, please re-login with other Nickname")
             return jsonify({'success' : False})
         else :
             id.append(name)
-            chat_session[name] = []
+            chat_session[name] = [] # history
             print(f"your nickname is {name}")
             for _ in id :
                 print(f"{_} in session.")
+            
             return jsonify({'success' : True})
 
 @app.route('/chat', methods=['GET', 'POST'])
 def chat():
-    # user_id = session.get('user_id')
-    # if user_id is None:
-    #     user = User.query.get(user_id)
-    #     return 'Login Error'
-    
-    # print('User ' + user_id + " login.")
     if request.method == 'POST':
         data = request.json
         user = data.get('id')
         question = data.get("question")
         question_history.append(question)
 
+
+        print(f"사용자 닉네임 : {user}")
         print(question, " 수신함")
 
         answer = chatbot.service(question, chat_session[user])
@@ -64,5 +55,4 @@ def chat():
 
 if __name__ == '__main__':
     # app.run(debug=False, host='0.0.0.0')    # 서버 연결할 때 사용
-    print("hi back_end server started")
     app.run(port = 5000)  #로컬에서 실험할 때 사용
