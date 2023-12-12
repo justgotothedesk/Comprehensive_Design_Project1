@@ -1,7 +1,7 @@
 import os
 current_directory = os.getcwd()
-k = os.listdir(current_directory+"\\cloud api key")
-path = current_directory + "\\cloud api key\\" + k[0] #디렉토리에서 api key 파일 위치에 따라 안될 수도 있음
+k = os.listdir(current_directory+"/cloud api key")
+path = current_directory + "/cloud api key/" + k[0] #디렉토리에서 api key 파일 위치에 따라 안될 수도 있음
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = path
 
 import torch
