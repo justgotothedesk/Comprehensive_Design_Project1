@@ -69,11 +69,11 @@ const Main = () => {
                 {output.map((item, index) => (
                     <div key={index} className="answer">
                         <p style={{ textAlign: "left" }}>
-                            <strong>You</strong> 
+                            <strong>You</strong>
                             <div className="question">
                                 {item.command}
                             </div>
-                            <strong>강의잇나</strong> 
+                            <strong>강의잇나</strong>
                             <div>
                                 {item.result}
                             </div>

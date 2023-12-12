@@ -20,8 +20,10 @@ const Sidebar = () => {
       '/services': `
         <div>
           <h2>강의잇나 이용방법</h2>
-          <p>해당 강의의 전반적인 점수를 알고 싶을 때</p>
-          <p>수강하고 싶은 과목의 종류가 너무 많을 때</p>
+          <p>"(교수명) 교수님 수업 추천해줘"</p>
+          <p>"(과목명) 수업 추천해줘"</p>
+          <p>"(교수명 + 과목명) 어때?"</p>
+          <p>형태로 물어봐주시면 친절히 답변드립니다.</p>
         </div>
       `,
       '/contact': `
@@ -73,7 +75,7 @@ const Sidebar = () => {
       <hr></hr>
       <div id="sidebar-body">
         <a onClick={() => openWindow('/about')}>About</a>
-        <a onClick={() => openWindow('/services')}>Services</a>
+        <a onClick={() => openWindow('/services')}>How to Use</a>
         <a onClick={() => window.open('https://docs.google.com/forms/d/e/1FAIpQLScLgGbe6GTl0-5ocKXeBFN2WPYp98-qELmiG6AyxQLRLYqz5w/viewform')}>Survey</a>
         <a onClick={() => openWindow('/contact')}>Contact</a>
       </div>

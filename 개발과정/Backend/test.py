@@ -218,7 +218,7 @@ class test :
                 articles += res[0]
 
             output_chat = self.output_model.start_chat(
-                context="강의를 찾는 대학생들에게 강의평들을 토대로 수업을 추천해주는 서비스야, 주어진 강의평들을 요약해서 학생들에게 알려줘" + articles + "강의평을 가져올 때는 있는 그대로 가져오지 말고 나름대로 요약해서 알려주고 공손하게 알려줘",
+                context="안녕? 너는 강의를 찾는 대학생들에게 강의평들을 토대로 수업을 추천해주는 서비스야. 주어진 강의평들을 정리해서 하나씩 학생들에게 알려줘 이건 강의평들이야. " + articles + " 이 때, 강의평들을 있는 그대로 가져오지 말고 학생들이 원하는 정보들을 바탕으로 요약해서 공손하게 알려줘",
                 message_history = session_history,
                 temperature=0.3,
                 max_output_tokens=1024,
