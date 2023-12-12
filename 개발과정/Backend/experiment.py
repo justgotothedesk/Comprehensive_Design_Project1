@@ -56,15 +56,15 @@ db_name = "pgvector"
 connector = Connector()
 
 def getconn() -> pg8000.dbapi.Connection:
-    conn: pg8000.dbapi.Connection = connector.connect(
-        instance_connection_name,
-        "pg8000",
-        user=db_user,
-        password=db_pass,
-        db=db_name,
-        ip_type=IPTypes.PUBLIC,
-    )
-    return conn
+            conn: pg8000.dbapi.Connection = connector.connect(
+                instance_connection_name,
+                "pg8000",
+                user=db_user,
+                password=db_pass,
+                db=db_name,
+                ip_type=IPTypes.PUBLIC,
+            )
+            return conn
 
 pool = sqlalchemy.create_engine(
     "postgresql+pg8000://",
@@ -116,7 +116,7 @@ chat = chat_model.start_chat(
         ],
         temperature=0.0,
         max_output_tokens=1024,
-        top_p=0.8,
+        top_p=0.5,
         top_k=1
         )
 # recommendation_chat = ChatModel.from_pretrained("chat-bison@001")
@@ -151,6 +151,7 @@ while True :
 
         if key_query == "NULL" :
             print("강의평과 관련된 내용을 입력하세요.")
+            continue
 
         lec, prof, query = extract(key_query)
         inputs = tokenizer(query, padding=True, truncation=True, return_tensors="pt")
@@ -211,24 +212,22 @@ while True :
         embedding_str = ",".join(str(x) for x in embedding_arr)
         embedding_str = "["+embedding_str+"]"
 
-        
-        related = ""
-        for information in info :
-            a = cal_score(query, information[0])
-            if a > 0.7 :
-                related += "\'"+information[1]+"\',"
-        print(related)
-
         insert_stat, param = (sqlalchemy.text(
-                        """SELECT info, text FROM RECOMMENDATION
-                        WHERE INFO in (:list)
+                        """SELECT info as proflec, text as articles
+                        FROM (
+                            select r.info, r.text, v
+                            from RECOMMENDATION r
+                            order BY infov <=> :info_vec LIMIT 5
+                        ) AS SUB_RECOMMENDATION
                         ORDER BY v <=> :query_vec LIMIT 3"""   # <-> : L2 Distance,  <=> : Cosine Distance, <#> : inner product (음수 값을 return)
-            ), {"list": related[:-1], "query_vec": embedding_str})
+            ), {"info_vec": embedding_str, "query_vec": embedding_str})
 
         with pool.connect() as db_conn: # 쿼리 실행문
             result = db_conn.execute(
                 insert_stat, parameters = param
             ).fetchall()
+
+        print(f"DB 쿼리 결과 : {len(result[0])}")
 
         for _ in result :
             print(_)
@@ -253,6 +252,3 @@ while True :
         history.append(ChatMessage(content = output, author = "bot"))
 
         print(output)
-
-    for his in history :
-        print(his)

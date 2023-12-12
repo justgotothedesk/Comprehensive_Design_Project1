@@ -48,8 +48,6 @@ def chat():
 
         answer = chatbot.service(question, chat_session[user])
 
-        print(chat_session[user])
-
         response_data = {"question": question, "answer": answer}
         return jsonify(response_data)
 

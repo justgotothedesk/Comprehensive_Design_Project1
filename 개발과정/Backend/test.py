@@ -4,6 +4,7 @@ k = os.listdir(current_directory+"\\cloud api key")
 path = current_directory + "\\cloud api key\\" + k[0] #디렉토리에서 api key 파일 위치에 따라 안될 수도 있음
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = path
 
+import torch
 import sys
 import vertexai
 import pg8000
@@ -63,104 +64,171 @@ class test :
         self.chat_model = ChatModel.from_pretrained("chat-bison@001")  #chat model 불러오기
         self.output_model = ChatModel.from_pretrained("chat-bison@001")
 
-        return
-
-    # def service(self, query_text):
-    def service(self, query_text, session_history): #session 생성된 경우
-        chat = self.chat_model.start_chat(
-            context="수업에 대해 궁금해하는 학생들이 과목, 교수에 대해 질문하는 서비스야. 강의평과 관련된 질문이면 질문 내용에 질문을 출력해주고 아니면 그냥 NULL을 출력해줘",
-            examples=[
-                InputOutputTextPair(
-                    input_text="정기숙 교수님 자료구조응용 수업 어때?에서 과목명, 교수명, 질문 내용이 뭐야?",
-                    output_text="과목명 자료구조응용 교수명 정기숙 질문 내용 수업이 어떤지 물어보는 내용",
-                ),
-                InputOutputTextPair(
-                    input_text="정기숙 교수님 어때?에서 과목명, 교수명, 질문내용이 뭐야?",
-                    output_text="과목명 NULL 교수명 정기숙 질문 내용 교수님이 어떤지 물어보는 내용",
-                ),
-                InputOutputTextPair(
-                    input_text="자료구조응용 수업 어때?에서 과목명, 교수명, 질문내용이 뭐야?",
-                    output_text="과목명 자료구조응용 교수명 NULL 질문 내용 수업이 어떤지 물어보는 내용",
-                ),
-                InputOutputTextPair(
-                    input_text="과제 어떻고 수업 어때?에서 과목명, 교수명, 질문 내용이 뭐야?",
-                    output_text="질문 내용 과제가 어떻고 수업이 어떤지 물어보는 내용",
-                ),
-                InputOutputTextPair(
-                    input_text="강의평과 관련 없는 질문",
-                    output_text="NULL",
-                ),
-            ],
-            temperature=0.0,
-            max_output_tokens=1024,
-            top_p=0.8,
-            top_k=1
-        )
-
-        #LLM에게 질문해서 user의 input으로부터 과목, 교수명 가져오기
-        key_query = chat.send_message(query_text+"에서 과목명, 교수명, 질문 내용이 뭐야?").text
-
-        if key_query == "NULL" :
-            print("강의평과 관련된 내용을 입력하세요.")
-
-        def extract(q): #LLM의 output으로부터 prof name, lecture name 추출
-            lec = q.find("과목명")
-            prof = q.find("교수명")
-            q_start = q.find("질문 내용")
-
-            lecture = q[lec+4:prof-1]
-            professor = q[prof+4:]
-            query = q[q_start+6:]
-            if lecture == "NULL" : lecture = None
-            if professor == "NULL" : professor = None
-            return lecture, professor, query
-
-        lec, prof, query = extract(key_query)
-        inputs = self.tokenizer(query, padding=True, truncation=True, return_tensors="pt")
+        inputs = self.tokenizer("수업 어때?", padding=True, truncation=True, return_tensors="pt")
 
         embeddings, _ = self.model(**inputs, return_dict=False)
-        embedding_arr = embeddings[0][0].detach().numpy()
-        embedding_str = ",".join(str(x) for x in embedding_arr)
-        embedding_str = "["+embedding_str+"]"
+        self.option1 = embeddings[0][0]
 
-        if lec != None and prof != None :    #User의 질문 유형에 맞게 쿼리문 짜줌
+        inputs = self.tokenizer("수업 뭐있어?", padding=True, truncation=True, return_tensors="pt")
+
+        embeddings, _ = self.model(**inputs, return_dict=False)
+        self.option2 = embeddings[0][0]
+
+        return
+
+    def service(self, query_text, session_history): #session 생성된 경우
+        def cal_score(a, b):
+            if len(a.shape) == 1: a = a.unsqueeze(0)
+            if len(b.shape) == 1: b = b.unsqueeze(0)
+
+            a_norm = a / a.norm(dim=1)[:, None]
+            b_norm = b / b.norm(dim=1)[:, None]
+            return torch.mm(a_norm, b_norm.transpose(0, 1)) * 100
+        
+        inputs = self.tokenizer(query_text, padding=True, truncation=True, return_tensors="pt")
+
+        embeddings, _ = self.model(**inputs, return_dict=False)
+        embedding_str = embeddings[0][0]
+        
+        if cal_score(embedding_str, self.option1) >= cal_score(embedding_str, self.option2) :
+
+            chat = self.chat_model.start_chat(
+                context="수업에 대해 궁금해하는 학생들이 과목, 교수에 대해 질문하는 서비스야. 강의평과 관련된 질문이면 질문 내용에 질문을 출력해주고 아니면 그냥 NULL을 출력해줘",
+                examples=[
+                    InputOutputTextPair(
+                        input_text="정기숙 교수님 자료구조응용 수업 어때?에서 과목명, 교수명, 질문 내용이 뭐야?",
+                        output_text="과목명 자료구조응용 교수명 정기숙 질문 내용 수업이 어떤지 물어보는 내용",
+                    ),
+                    InputOutputTextPair(
+                        input_text="정기숙 교수님 어때?에서 과목명, 교수명, 질문내용이 뭐야?",
+                        output_text="과목명 NULL 교수명 정기숙 질문 내용 교수님이 어떤지 물어보는 내용",
+                    ),
+                    InputOutputTextPair(
+                        input_text="자료구조응용 수업 어때?에서 과목명, 교수명, 질문내용이 뭐야?",
+                        output_text="과목명 자료구조응용 교수명 NULL 질문 내용 수업이 어떤지 물어보는 내용",
+                    ),
+                    InputOutputTextPair(
+                        input_text="과제 어떻고 수업 어때?에서 과목명, 교수명, 질문 내용이 뭐야?",
+                        output_text="질문 내용 과제가 어떻고 수업이 어떤지 물어보는 내용",
+                    ),
+                    InputOutputTextPair(
+                        input_text="강의평과 관련 없는 질문",
+                        output_text="NULL",
+                    ),
+                ],
+                temperature=0.0,
+                max_output_tokens=1024,
+                top_p=0.8,
+                top_k=1
+            )
+
+            #LLM에게 질문해서 user의 input으로부터 과목, 교수명 가져오기
+            key_query = chat.send_message(query_text+"에서 과목명, 교수명, 질문 내용이 뭐야?").text
+
+            if key_query == "NULL" :
+                return "강의평과 관련된 내용을 입력하세요."
+
+            def extract(q): #LLM의 output으로부터 prof name, lecture name 추출
+                lec = q.find("과목명")
+                prof = q.find("교수명")
+                q_start = q.find("질문 내용")
+
+                lecture = q[lec+4:prof-1]
+                professor = q[prof+4:]
+                query = q[q_start+6:]
+                if lecture == "NULL" : lecture = None
+                if professor == "NULL" : professor = None
+                return lecture, professor, query
+
+            lec, prof, query = extract(key_query)
+            inputs = self.tokenizer(query, padding=True, truncation=True, return_tensors="pt")
+
+            embeddings, _ = self.model(**inputs, return_dict=False)
+            embedding_arr = embeddings[0][0].detach().numpy()
+            embedding_str = ",".join(str(x) for x in embedding_arr)
+            embedding_str = "["+embedding_str+"]"
+
+            if lec != None and prof != None :    #User의 질문 유형에 맞게 쿼리문 짜줌
+                insert_stat, param = (sqlalchemy.text(
+                            """SELECT origin_text, rating, assignment, team, grade, attendance, test FROM PROFNLEC WHERE INFO LIKE :information
+                            ORDER BY v <-> :query_vec LIMIT 20"""   # <-> : L2 Distance,  <=> : Cosine Distance, <#> : inner product (음수 값을 return)
+                ), {"information": f'%{lec}%{prof}%', "query_vec": embedding_str})
+            elif lec != None :
+                insert_stat, param = sqlalchemy.text(
+                            """SELECT origin_text, rating, assignment, team, grade, attendance, test FROM PROFNLEC WHERE INFO LIKE :lecture
+                            ORDER BY v <-> :query_vec LIMIT 20"""
+                ), {"lecture": f'%{lec}%', "query_vec": embedding_str}
+            elif prof != None :
+                insert_stat, param = sqlalchemy.text(
+                            """SELECT origin_text, rating, assignment, team, grade, attendance, test FROM PROFNLEC WHERE INFO LIKE :professor
+                            ORDER BY v <-> :query_vec LIMIT 20"""
+                ), {"professor": f'%{prof}%', "query_vec": embedding_str}
+
+            with self.pool.connect() as db_conn: # 쿼리 실행문
+                result = db_conn.execute(
+                    insert_stat, parameters = param
+                ).fetchall()
+
+            #query 결과를 문자열로 바꾸기 <- Context에는 문자열만 들어갈 수 있음
+            articles = ""
+            for res in result :
+                articles += res[0]
+
+            output_chat = self.output_model.start_chat(
+                context="강의를 찾는 대학생들에게 강의평들을 토대로 수업이 어떤지 알려주는 서비스야, 주어진 강의평들을 요약해서 학생들에게 알려줘" + articles + "강의평을 가져올 때는 있는 그대로 가져오지 말고 나름대로 요약해서 알려주고 공손하게 알려줘",
+                message_history = session_history,
+                temperature=0.3,
+                max_output_tokens=1024,
+                top_p=0.8,
+                top_k=10
+            )
+
+            output = output_chat.send_message(query_text).text
+
+            session_history.append(ChatMessage(content = query_text, author = "user"))
+            session_history.append(ChatMessage(content = output, author = "bot"))
+
+            return output
+        
+        else :
+            inputs = self.tokenizer(query_text, padding=True, truncation=True, return_tensors="pt")
+            embeddings, _ = self.model(**inputs, return_dict=False)
+            query, embedding_arr = embeddings[0][0], embeddings[0][0].detach().numpy()
+            embedding_str = ",".join(str(x) for x in embedding_arr)
+            embedding_str = "["+embedding_str+"]"
+
             insert_stat, param = (sqlalchemy.text(
-                        """SELECT origin_text, rating, assignment, team, grade, attendance, test FROM PROFNLEC WHERE INFO LIKE :information
-                        ORDER BY v <-> :query_vec LIMIT 20"""   # <-> : L2 Distance,  <=> : Cosine Distance, <#> : inner product (음수 값을 return)
-            ), {"information": f'%{lec}%{prof}%', "query_vec": embedding_str})
-        elif lec != None :
-            insert_stat, param = sqlalchemy.text(
-                        """SELECT origin_text, rating, assignment, team, grade, attendance, test FROM PROFNLEC WHERE INFO LIKE :lecture
-                        ORDER BY v <-> :query_vec LIMIT 20"""
-            ), {"lecture": f'%{lec}%', "query_vec": embedding_str}
-        elif prof != None :
-            insert_stat, param = sqlalchemy.text(
-                        """SELECT origin_text, rating, assignment, team, grade, attendance, test FROM PROFNLEC WHERE INFO LIKE :professor
-                        ORDER BY v <-> :query_vec LIMIT 20"""
-            ), {"professor": f'%{prof}%', "query_vec": embedding_str}
+                            """SELECT info as proflec, text as articles
+                            FROM (
+                                select r.info, r.text, v
+                                from RECOMMENDATION r
+                                order BY infov <=> :info_vec LIMIT 5
+                            ) AS SUB_RECOMMENDATION
+                            ORDER BY v <=> :query_vec LIMIT 3"""   # <-> : L2 Distance,  <=> : Cosine Distance, <#> : inner product (음수 값을 return)
+                ), {"info_vec": embedding_str, "query_vec": embedding_str})
 
-        with self.pool.connect() as db_conn: # 쿼리 실행문
-            result = db_conn.execute(
-                insert_stat, parameters = param
-            ).fetchall()
+            with self.pool.connect() as db_conn: # 쿼리 실행문
+                result = db_conn.execute(
+                    insert_stat, parameters = param
+                ).fetchall()
 
-        #query 결과를 문자열로 바꾸기 <- Context에는 문자열만 들어갈 수 있음
-        articles = ""
-        for res in result :
-            articles += res[0]
+            #query 결과를 문자열로 바꾸기 <- Context에는 문자열만 들어갈 수 있음
+            articles = ""
+            for res in result :
+                articles += res[0]
 
-        output_chat = self.output_model.start_chat(
-            context="강의를 찾는 대학생들에게 강의평들을 토대로 수업이 어떤지 알려주는 서비스야, 주어진 강의평들을 요약해서 학생들에게 알려줘" + articles + "강의평을 가져올 때는 있는 그대로 가져오지 말고 나름대로 요약해서 알려주고 공손하게 알려줘",
-            message_history = session_history,
-            temperature=0.3,
-            max_output_tokens=1024,
-            top_p=0.8,
-            top_k=10
-        )
+            output_chat = self.output_model.start_chat(
+                context="강의를 찾는 대학생들에게 강의평들을 토대로 수업을 추천해주는 서비스야, 주어진 강의평들을 요약해서 학생들에게 알려줘" + articles + "강의평을 가져올 때는 있는 그대로 가져오지 말고 나름대로 요약해서 알려주고 공손하게 알려줘",
+                message_history = session_history,
+                temperature=0.3,
+                max_output_tokens=1024,
+                top_p=0.8,
+                top_k=40
+            )
 
-        output = output_chat.send_message(query_text).text
+            output = output_chat.send_message(query_text).text
 
-        session_history.append(ChatMessage(content = query_text, author = "user"))
-        session_history.append(ChatMessage(content = output, author = "bot"))
+            session_history.append(ChatMessage(content = query_text, author = "user"))
+            session_history.append(ChatMessage(content = output, author = "bot"))
 
-        return output
+            return output

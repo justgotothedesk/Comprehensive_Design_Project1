@@ -82,7 +82,8 @@ with pool.connect() as db_conn:
         """CREATE table RECOMMENDATION(
             info varchar(100) PRIMARY KEY,
             text varchar(4096),
-            v vector(768))
+            v vector(768),
+            infov vector(768))
         """
     )
     )
@@ -131,13 +132,20 @@ for info in a :
     embedding_str = ",".join(str(x) for x in embedding_arr)
     embedding_str = "["+embedding_str+"]"
 
+    info_inputs = tokenizer(info, padding = True, truncation = True, return_tensors = "pt")
+
+    info_embeddings, _ = model(**info_inputs, return_dict = False)
+    info_embedding_arr = info_embeddings[0][0].detach().numpy()
+    info_embedding_str = ",".join(str(x) for x in info_embedding_arr)
+    info_embedding_str = "["+info_embedding_str+"]"
+
     insert_stmt = sqlalchemy.text(
-        "INSERT INTO RECOMMENDATION VALUES (:info, :origin_text, :v)"
+        "INSERT INTO RECOMMENDATION VALUES (:info, :origin_text, :v, :infov)"
     )
 
     with pool.connect() as db_conn :
         db_conn.execute(
-            insert_stmt, parameters={"info": info, "origin_text": lecture_sum, "v": embedding_str}
+            insert_stmt, parameters={"info": info, "origin_text": lecture_sum, "v": embedding_str, "infov": info_embedding_str}
         )
         db_conn.commit()
     print("정보 :", info)
