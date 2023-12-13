@@ -74,7 +74,7 @@ const Main = () => {
                                 {item.command}
                             </div>
                             <strong>강의잇나</strong>
-                            <div>
+                            <div className="question">
                                 {item.result}
                             </div>
                         </p>
