@@ -31,14 +31,16 @@ const Mobile_Body = () => {
         onSignUp();
     };
     const processCommand = (command) => {
-        return "잠시만 기다려 주세요. 10초 정도 소요됩니다.";
+        return <div className="blink">
+            ⦁
+        </div>;
     };
 
     const onSignUp = () => {
         //'http://34.64.242.154:5000'  server ip address
-        fetch("http://127.0.0.1:5000", {
+        fetch("http://34.22.99.145:5000/chat", {
             method: "POST",
-            body: JSON.stringify({ question: input }),
+            body: JSON.stringify({ question: input, id : sessionStorage.getItem('user_id') }),
             headers: {
                 "Content-Type": "application/json",
             },
@@ -72,7 +74,7 @@ const Mobile_Body = () => {
                                 {item.command}
                             </div>
                             <strong>강의잇나</strong> 
-                            <div className="mobile-animation" >
+                            <div className="mobile-question" >
                                 {item.result}
                             </div>
                         </p>
