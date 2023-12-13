@@ -28,7 +28,7 @@ function App() {
     }
 
     const make_session = () => {
-        fetch("http://34.22.66.120:5000/login", {
+        fetch("http://34.22.99.145:5000/login", {
             method: "POST",
             body: JSON.stringify({ id : inputId }),
             headers: {
@@ -75,7 +75,7 @@ function App() {
                          <div className="login-header">
                             <img src="logo.png" alt="logo" />
                             <h2>강의잇나 ver. 1.0</h2>
-                            <h3>이미 존재하는 닉네임입니다. 다른 닉네임을 입력해주세요.</h3>
+                            <h2>로그인이 되지 않으면 다른 닉네임을 사용해주세요.</h2>
                         </div>
                         <InputGroup>
                             <Form.Control
@@ -113,7 +113,7 @@ function App() {
                         <div className="login-header">
                             <img src="logo.png" alt="logo" />
                             <h2>강의잇나 ver. 1.0</h2>
-                            <h3>이미 존재하는 닉네임입니다. 다른 닉네임을 입력해주세요.</h3>
+                            <h2>로그인이 되지 않으면 다른 닉네임을 사용해주세요.</h2>
                         </div>
                         <InputGroup>
                             <Form.Control
