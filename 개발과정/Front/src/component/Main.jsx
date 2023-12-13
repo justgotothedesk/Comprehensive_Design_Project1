@@ -38,7 +38,7 @@ const Main = () => {
 
     const onSignUp = () => {
         //'http://34.64.242.154:5000'  server ip address
-        fetch("http://127.0.0.1:5000/chat", {
+        fetch("http://34.22.66.120:5000/chat", {
             method: "POST",
             body: JSON.stringify({ question: input , id : sessionStorage.getItem('user_id')}),
             headers: {

@@ -28,7 +28,7 @@ function App() {
     }
 
     const make_session = () => {
-        fetch("http://127.0.0.1:5000/login", {
+        fetch("http://34.22.66.120:5000/login", {
             method: "POST",
             body: JSON.stringify({ id : inputId }),
             headers: {
