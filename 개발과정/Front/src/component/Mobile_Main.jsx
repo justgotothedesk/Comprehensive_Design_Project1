@@ -38,7 +38,7 @@ const Mobile_Body = () => {
 
     const onSignUp = () => {
         //'http://34.64.242.154:5000'  server ip address
-        fetch("http://34.22.106.12:5000/chat", {
+        fetch("http://34.64.148.223:5000/chat", {
             method: "POST",
             body: JSON.stringify({ question: input, id : sessionStorage.getItem('user_id') }),
             headers: {
